@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX LEGENDS — SEASON 23</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --apex-red:    #d93025;
+  --apex-orange: #e8500a;
+  --apex-amber:  #e8a020;
+  --apex-gold:   #c8943c;
+  --apex-teal:   #00e5c8;
+  --apex-blue:   #4a9fff;
+  --apex-purple: #b060e8;
+  --apex-dark:   #070a0d;
+  --apex-mid:    #0d1117;
+  --apex-panel:  rgba(11,15,20,0.92);
+  --apex-border: rgba(255,255,255,0.08);
+  --apex-text:   #b8c4d0;
+  --apex-bright: #e8ecf0;
+  --glow-r:      rgba(232,80,10,0.4);
+  --glow-t:      rgba(0,229,200,0.4);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{height:100%;}
+body{
+  background:var(--apex-dark);
+  color:var(--apex-text);
+  font-family:'Rajdhani',sans-serif;
+  min-height:100vh;overflow:hidden;cursor:crosshair;user-select:none;
+}
+/* GRAIN TEXTURE */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size:256px 256px;mix-blend-mode:overlay;opacity:0.55;
+}
+/* SCANLINES */
+body::before{
+  content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px);
+}
+
+/* BACKGROUND */
+.scene-bg{
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 140% 80% at 50% 110%,rgba(180,40,10,0.22) 0%,rgba(120,30,5,0.12) 35%,transparent 65%),
+    radial-gradient(ellipse 70% 50% at 15% 40%,rgba(0,229,200,0.06) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 20%,rgba(74,159,255,0.05) 0%,transparent 55%),
+    linear-gradient(170deg,#04060a 0%,#070b10 45%,#0a0e15 100%);
+}
+.hex-grid{
+  position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 0 L56 15 L56 45 L28 60 L0 45 L0 15 Z' fill='none' stroke='%2300e5c8' stroke-width='0.5'/%3E%3Cpath d='M28 60 L56 75 L56 105 L28 120 L0 105 L0 75 Z' fill='none' stroke='%2300e5c8' stroke-width='0.5'/%3E%3C/svg%3E");
+  background-size:56px 100px;animation:hexPulse 12s ease-in-out infinite;
+}
+@keyframes hexPulse{0%,100%{opacity:0.06}50%{opacity:0.12}}
+.dot-matrix{
+  position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.13;
+  background-image:radial-gradient(circle,rgba(0,229,200,0.35) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+
+/* LAYOUT */
+.game-wrapper{
+  position:relative;z-index:10;
+  width:100vw;height:100vh;
+  display:grid;grid-template-rows:68px 1fr 90px;
+}
+
+/* TOP BAR */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+  background:linear-gradient(180deg,rgba(5,8,12,0.97) 0%,rgba(7,10,16,0.75) 100%);
+  border-bottom:1px solid rgba(200,148,60,0.25);
+  box-shadow:0 4px 40px rgba(0,0,0,0.6);
+  backdrop-filter:blur(20px);
+  position:relative;overflow:hidden;
+}
+.topbar::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.012) 40%,rgba(255,255,255,0.025) 50%,rgba(255,255,255,0.012) 60%,transparent 100%);
+  pointer-events:none;
+}
+.topbar::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(200,148,60,0.5) 20%,rgba(232,80,10,0.8) 50%,rgba(200,148,60,0.5) 80%,transparent 100%);
+}
+.logo-area{display:flex;align-items:center;gap:12px;}
+.logo-icon{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,var(--apex-orange),var(--apex-amber));
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  box-shadow:0 0 20px var(--glow-r);animation:iconGlow 3s ease-in-out infinite;
+}
+@keyframes iconGlow{0%,100%{box-shadow:0 0 15px var(--glow-r);}50%{box-shadow:0 0 35px var(--glow-r),0 0 60px rgba(232,80,10,0.2);}}
+.logo-text{
+  font-family:'Orbitron',monospace;font-size:22px;font-weight:900;
+  color:var(--apex-bright);letter-spacing:5px;text-transform:uppercase;
+  text-shadow:0 0 30px rgba(232,80,10,0.4);
+}
+.logo-text em{color:var(--apex-orange);font-style:normal;}
+.logo-season{
+  font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--apex-amber);
+  letter-spacing:3px;padding:3px 8px;
+  border:1px solid rgba(232,160,32,0.35);background:rgba(232,160,32,0.06);
+  clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+}
+.topbar-center{display:flex;align-items:center;gap:20px;}
+.nav-tab{
+  font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(184,196,208,0.5);
+  padding:6px 16px;cursor:pointer;position:relative;transition:color 0.2s;
+  border:1px solid transparent;
+}
+.nav-tab:hover{color:var(--apex-text);}
+.nav-tab.active{
+  color:var(--apex-bright);border-color:rgba(232,80,10,0.4);background:rgba(232,80,10,0.08);
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+}
+.nav-tab.active::after{
+  content:'';position:absolute;bottom:-1px;left:20%;right:20%;height:2px;
+  background:var(--apex-orange);box-shadow:0 0 10px var(--apex-orange);
+}
+.topbar-right{display:flex;align-items:center;gap:16px;}
+.rp-display{
+  display:flex;align-items:center;gap:8px;padding:6px 14px;
+  background:rgba(200,148,60,0.08);border:1px solid rgba(200,148,60,0.25);
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+}
+.rp-val{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--apex-gold);}
+.rp-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(200,148,60,0.6);letter-spacing:1px;}
+.player-profile{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.avatar-frame{position:relative;width:44px;height:44px;}
+.avatar-inner{
+  width:100%;height:100%;
+  clip-path:polygon(12px 0%,100% 0%,100% calc(100% - 12px),calc(100% - 12px) 100%,0% 100%,0% 12px);
+  background:linear-gradient(135deg,#1a2535,#0d1828);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+.profile-name{font-size:14px;font-weight:700;color:var(--apex-bright);letter-spacing:1px;}
+.profile-rank{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--apex-gold);letter-spacing:1px;}
+.online-dot{
+  width:7px;height:7px;border-radius:50%;background:#39ff14;
+  box-shadow:0 0 8px #39ff14;animation:blink 2.5s ease-in-out infinite;
+}
+@keyframes blink{50%{opacity:0.4;}}
+
+/* MAIN */
+.main-content{
+  display:grid;grid-template-columns:300px 1fr 300px;gap:16px;
+  padding:16px 24px;overflow:hidden;align-items:start;
+}
+
+/* PANEL BASE */
+.panel{
+  background:var(--apex-panel);border:1px solid var(--apex-border);
+  position:relative;overflow:hidden;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),inset 0 -1px 0 rgba(0,0,0,0.4),0 8px 32px rgba(0,0,0,0.5);
+}
+.panel::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,0.025) 0%,transparent 50%);
+}
+.panel::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;z-index:1;
+  background:linear-gradient(90deg,transparent 0%,var(--apex-orange) 30%,var(--apex-amber) 70%,transparent 100%);
+  opacity:0.8;
+}
+.panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.05);
+  background:rgba(0,0,0,0.2);position:relative;z-index:1;
+}
+.panel-title{
+  font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:3px;
+  text-transform:uppercase;color:var(--apex-gold);display:flex;align-items:center;gap:7px;
+}
+.panel-title-bar{
+  width:3px;height:12px;
+  background:linear-gradient(180deg,var(--apex-orange),var(--apex-amber));
+  box-shadow:0 0 8px var(--glow-r);
+}
+.panel-badge{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(184,196,208,0.4);letter-spacing:1px;}
+
+/* LEFT PANEL */
+.left-panel{display:flex;flex-direction:column;gap:12px;}
+.legend-active-card{
+  padding:14px 16px;position:relative;
+  background:linear-gradient(135deg,rgba(232,80,10,0.12) 0%,rgba(200,148,60,0.06) 100%);
+  border:1px solid rgba(232,80,10,0.3);overflow:hidden;
+}
+/* carbon fiber texture on active card */
+.legend-active-card::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cdefs%3E%3Cpattern id='carbon' x='0' y='0' width='4' height='4' patternUnits='userSpaceOnUse'%3E%3Crect width='2' height='2' fill='rgba(255,255,255,0.022)'/%3E%3Crect x='2' y='2' width='2' height='2' fill='rgba(255,255,255,0.022)'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23carbon)'/%3E%3C/svg%3E") repeat;
+  pointer-events:none;
+}
+.selected-legend-name{
+  font-family:'Bebas Neue','Rajdhani',sans-serif;font-size:38px;color:var(--apex-bright);
+  line-height:1;letter-spacing:3px;text-shadow:0 0 40px rgba(232,80,10,0.4);
+}
+.selected-legend-class{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--apex-teal);letter-spacing:3px;margin-top:2px;}
+.selected-legend-icon{font-size:52px;margin:6px 0;}
+.legend-stat-row{display:flex;gap:16px;margin-top:8px;}
+.lstat{display:flex;flex-direction:column;gap:2px;}
+.lstat-val{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:var(--apex-bright);}
+.lstat-key{font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(184,196,208,0.4);letter-spacing:1px;}
+.legend-roster{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:12px 14px;}
+.legend-card{
+  padding:9px 10px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.02);
+  cursor:pointer;position:relative;transition:all 0.18s;overflow:hidden;
+}
+/* diamond weave texture */
+.legend-card::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Cpath d='M0 10 L10 0 L20 10 L10 20 Z' fill='none' stroke='rgba(255,255,255,0.015)' stroke-width='0.8'/%3E%3C/svg%3E") repeat;
+  pointer-events:none;
+}
+.legend-card:hover{
+  border-color:rgba(0,229,200,0.35);background:rgba(0,229,200,0.05);
+  transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.4),0 0 20px rgba(0,229,200,0.08);
+}
+.legend-card.active{border-color:var(--apex-teal);background:rgba(0,229,200,0.08);box-shadow:0 0 20px rgba(0,229,200,0.15);}
+.legend-card.active::after{content:'▶';position:absolute;top:5px;right:6px;font-size:8px;color:var(--apex-teal);}
+.lc-icon{font-size:22px;margin-bottom:3px;}
+.lc-name{font-size:11px;font-weight:700;color:var(--apex-bright);letter-spacing:1px;text-transform:uppercase;}
+.lc-type{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;margin-top:1px;}
+.type-O{color:#ff6a45;}.type-D{color:#60a8ff;}.type-S{color:#4affa0;}.type-R{color:var(--apex-gold);}
+.lc-badge{
+  display:inline-block;font-size:7px;font-weight:700;letter-spacing:1px;
+  padding:1px 5px;margin-top:4px;
+  clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%);
+}
+.badge-O{background:rgba(200,50,10,0.3);color:#ff6a45;}
+.badge-D{background:rgba(50,120,220,0.3);color:#60a8ff;}
+.badge-S{background:rgba(20,180,80,0.3);color:#4affa0;}
+.badge-R{background:rgba(200,148,60,0.3);color:var(--apex-gold);}
+
+/* CENTER */
+.center-col{display:flex;flex-direction:column;gap:14px;}
+.mode-row{display:flex;gap:8px;}
+.mode-btn{
+  flex:1;padding:9px 8px;
+  font-family:'Orbitron',monospace;font-size:8px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.02);
+  color:rgba(184,196,208,0.45);
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+  transition:all 0.2s;position:relative;
+}
+/* brushed diagonal texture on mode buttons */
+.mode-btn::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(-45deg,transparent,transparent 4px,rgba(255,255,255,0.006) 4px,rgba(255,255,255,0.006) 5px);
+}
+.mode-btn:hover{color:var(--apex-bright);border-color:rgba(255,255,255,0.2);}
+.mode-btn.active{
+  background:rgba(232,80,10,0.14);border-color:var(--apex-orange);color:var(--apex-orange);
+  box-shadow:0 0 20px rgba(232,80,10,0.2),inset 0 0 20px rgba(232,80,10,0.05);
+}
+
+/* MAP */
+.map-panel{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--apex-border);box-shadow:0 8px 40px rgba(0,0,0,0.6),0 0 60px rgba(232,80,10,0.06);}
+.map-svg-bg{position:absolute;inset:0;width:100%;height:100%;}
+.map-overlay{position:absolute;inset:0;}
+.ring{position:absolute;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.ring-outer{
+  border:1.5px solid rgba(180,70,240,0.5);
+  box-shadow:0 0 20px rgba(180,70,240,0.25),inset 0 0 30px rgba(180,70,240,0.04);
+  animation:ringGlow 4s ease-in-out infinite;
+}
+.ring-inner{
+  border:1px solid rgba(0,229,200,0.6);
+  box-shadow:0 0 14px rgba(0,229,200,0.3);
+  animation:ringGlow 4s ease-in-out infinite reverse;
+}
+@keyframes ringGlow{
+  0%,100%{box-shadow:0 0 20px rgba(180,70,240,0.25),inset 0 0 30px rgba(180,70,240,0.04);}
+  50%{box-shadow:0 0 45px rgba(180,70,240,0.5),inset 0 0 50px rgba(180,70,240,0.08);}
+}
+.poi-label{
+  position:absolute;transform:translate(-50%,-50%);
+  font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;
+  color:rgba(184,196,208,0.45);text-transform:uppercase;pointer-events:none;white-space:nowrap;
+}
+.poi-dot{
+  position:absolute;width:5px;height:5px;border-radius:50%;transform:translate(-50%,-50%);
+  background:rgba(184,196,208,0.25);border:1px solid rgba(255,255,255,0.2);pointer-events:none;
+}
+.map-marker{position:absolute;transform:translate(-50%,-50%);cursor:pointer;}
+.marker-body{width:12px;height:12px;border-radius:50%;position:relative;transition:transform 0.2s;}
+.map-marker:hover .marker-body{transform:scale(1.6);}
+.marker-me .marker-body{background:var(--apex-teal);box-shadow:0 0 12px var(--apex-teal),0 0 24px rgba(0,229,200,0.5);animation:meMarker 2s ease-in-out infinite;}
+@keyframes meMarker{0%,100%{box-shadow:0 0 10px var(--apex-teal),0 0 20px rgba(0,229,200,0.4);}50%{box-shadow:0 0 20px var(--apex-teal),0 0 40px rgba(0,229,200,0.6);}}
+.marker-team .marker-body{background:var(--apex-blue);box-shadow:0 0 10px var(--apex-blue);}
+.marker-enemy .marker-body{background:var(--apex-red);box-shadow:0 0 10px var(--apex-red);width:10px;height:10px;}
+.marker-ping .marker-body{background:var(--apex-amber);box-shadow:0 0 12px var(--apex-amber);}
+.ping-ripple{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:12px;height:12px;border-radius:50%;
+  border:2px solid var(--apex-amber);animation:ripple 1.5s ease-out infinite;pointer-events:none;
+}
+@keyframes ripple{0%{transform:translate(-50%,-50%) scale(1);opacity:1;}100%{transform:translate(-50%,-50%) scale(4);opacity:0;}}
+.map-info-bar{
+  position:absolute;top:0;left:0;right:0;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:10px 12px;pointer-events:none;
+}
+.map-badge-grp{display:flex;flex-direction:column;gap:4px;}
+.map-badge{
+  font-family:'Share Tech Mono',monospace;font-size:9px;padding:3px 9px;letter-spacing:1px;
+  background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);pointer-events:none;
+}
+.map-badge-t{border-left:2px solid var(--apex-teal);color:var(--apex-teal);}
+.map-badge-r{border-left:2px solid var(--apex-red);color:#ff6060;}
+.map-badge-g{border-left:2px solid var(--apex-gold);color:var(--apex-gold);}
+.map-badge-p{border-left:2px solid var(--apex-purple);color:#c878f0;}
+.compass{
+  position:absolute;bottom:10px;right:10px;width:56px;height:56px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.65);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;pointer-events:none;
+}
+.compass-n{
+  position:absolute;top:6px;left:50%;transform:translateX(-50%);
+  font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--apex-red);font-weight:700;
+}
+.compass-needle{
+  width:1px;height:14px;
+  background:linear-gradient(180deg,var(--apex-red) 50%,rgba(184,196,208,0.4) 50%);
+  animation:compassSpin 20s linear infinite;transform-origin:center bottom;
+}
+@keyframes compassSpin{to{transform:rotate(360deg);}}
+
+/* STAT CARDS */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.stat-card{
+  padding:12px 14px;background:rgba(11,15,20,0.88);border:1px solid var(--apex-border);
+  position:relative;overflow:hidden;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+}
+/* carbon fiber checkerboard on stat cards */
+.stat-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='4' height='4' fill='rgba(255,255,255,0.012)'/%3E%3Crect x='4' y='4' width='4' height='4' fill='rgba(255,255,255,0.012)'/%3E%3C/svg%3E") repeat;
+}
+.stat-card::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(232,80,10,0.5),transparent);
+}
+.sc-val{
+  font-family:'Orbitron',monospace;font-size:28px;font-weight:900;
+  color:var(--apex-bright);line-height:1;
+  text-shadow:0 0 20px rgba(232,80,10,0.25);position:relative;z-index:1;
+}
+.sc-unit{font-size:13px;color:var(--apex-gold);margin-left:2px;}
+.sc-key{
+  font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(184,196,208,0.4);
+  letter-spacing:2px;margin-top:4px;text-transform:uppercase;position:relative;z-index:1;
+}
+.sc-bar{height:2px;margin-top:9px;background:rgba(255,255,255,0.06);position:relative;z-index:1;}
+.sc-fill{
+  height:100%;background:linear-gradient(90deg,var(--apex-orange),var(--apex-amber));
+  box-shadow:0 0 6px var(--apex-orange);transition:width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* RANK */
+.rank-panel{padding:12px 16px;}
+.rank-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.rank-tier{
+  font-family:'Bebas Neue','Rajdhani',sans-serif;font-size:32px;color:var(--apex-gold);
+  letter-spacing:3px;line-height:1;text-shadow:0 0 20px rgba(200,148,60,0.4);
+}
+.rank-div{font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(200,148,60,0.6);letter-spacing:2px;margin-top:-2px;}
+.rank-rp{font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:var(--apex-amber);text-align:right;}
+.rank-next{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(184,196,208,0.4);text-align:right;margin-top:2px;letter-spacing:1px;}
+.rank-progress-track{
+  height:6px;background:rgba(255,255,255,0.06);position:relative;overflow:hidden;
+  clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);
+}
+.rank-progress-fill{
+  height:100%;background:linear-gradient(90deg,var(--apex-gold),#ffdd88,var(--apex-amber));
+  box-shadow:0 0 10px rgba(200,148,60,0.6);width:68%;animation:rankAnim 2s ease-out;
+}
+@keyframes rankAnim{from{width:0%;}}
+.rank-pips{display:flex;gap:3px;margin-top:6px;}
+.rank-pip{flex:1;height:3px;background:rgba(255,255,255,0.06);}
+.rank-pip.filled{background:linear-gradient(90deg,var(--apex-gold),var(--apex-amber));}
+.rank-pip.partial{background:linear-gradient(90deg,var(--apex-gold) 68%,rgba(255,255,255,0.06) 68%);}
+
+/* RIGHT PANEL */
+.right-panel{display:flex;flex-direction:column;gap:12px;}
+.loadout-section{padding:12px 14px;display:flex;flex-direction:column;gap:8px;}
+.weapon-slot{
+  border:1px solid rgba(255,255,255,0.07);padding:10px 12px;
+  background:rgba(255,255,255,0.02);cursor:pointer;position:relative;overflow:hidden;
+  transition:all 0.2s;
+}
+/* brushed metal texture on weapons */
+.weapon-slot::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(-45deg,transparent 0px,transparent 3px,rgba(255,255,255,0.007) 3px,rgba(255,255,255,0.007) 4px);
+}
+.weapon-slot:hover{
+  border-color:rgba(232,80,10,0.4);background:rgba(232,80,10,0.06);
+  transform:translateX(2px);box-shadow:-3px 0 12px rgba(232,80,10,0.2);
+}
+.weapon-slot.equipped{border-left:3px solid var(--apex-orange);background:rgba(232,80,10,0.06);}
+.weapon-slot.equipped::before{
+  content:'◀ EQUIPPED';position:absolute;top:3px;right:8px;
+  font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--apex-orange);letter-spacing:2px;
+}
+.ws-top{display:flex;align-items:center;gap:10px;}
+.ws-emoji{font-size:28px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));}
+.ws-info{flex:1;}
+.ws-name{font-size:14px;font-weight:700;color:var(--apex-bright);letter-spacing:1px;position:relative;z-index:1;}
+.ws-type{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--apex-teal);letter-spacing:2px;margin-top:2px;}
+.ws-ammo-group{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.ws-ammo{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:var(--apex-amber);line-height:1;}
+.ws-ammo-max{font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(184,196,208,0.35);letter-spacing:1px;}
+.ws-ammo-bar{height:3px;margin-top:8px;background:rgba(255,255,255,0.06);position:relative;z-index:1;}
+.ws-ammo-fill{height:100%;background:linear-gradient(90deg,var(--apex-amber),#ffdd66);box-shadow:0 0 8px rgba(232,160,32,0.6);transition:width 0.8s;}
+.ws-attachments{display:flex;gap:4px;margin-top:6px;position:relative;z-index:1;}
+.attach{
+  font-size:8px;font-family:'Share Tech Mono',monospace;padding:2px 5px;letter-spacing:1px;
+  border:1px solid rgba(255,255,255,0.1);color:rgba(184,196,208,0.45);transition:all 0.2s;
+}
+.attach-blue{border-color:rgba(74,159,255,0.35);color:#80b8ff;}
+.attach-purple{border-color:rgba(176,96,232,0.35);color:#c890f0;}
+.attach-gold{border-color:rgba(200,148,60,0.45);color:var(--apex-gold);}
+
+/* INVENTORY */
+.inv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:12px 14px;}
+.inv-slot{
+  aspect-ratio:1;border:1px solid rgba(255,255,255,0.07);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;position:relative;background:rgba(255,255,255,0.02);transition:all 0.18s;overflow:hidden;
+}
+/* diamond crosshatch on inventory slots */
+.inv-slot::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Cpath d='M0 10 L10 0 L20 10 L10 20 Z' fill='none' stroke='rgba(255,255,255,0.018)' stroke-width='0.8'/%3E%3C/svg%3E") repeat;
+  pointer-events:none;
+}
+.inv-slot:hover{border-color:rgba(0,229,200,0.35);background:rgba(0,229,200,0.05);transform:scale(1.04);}
+.inv-slot.empty{opacity:0.3;}
+.inv-icon{font-size:20px;position:relative;z-index:1;}
+.inv-count{position:relative;z-index:1;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--apex-amber);}
+.inv-rarity-bar{position:absolute;top:0;left:0;right:0;height:2px;}
+.rb-blue{background:linear-gradient(90deg,var(--apex-blue),transparent);}
+.rb-purple{background:linear-gradient(90deg,var(--apex-purple),transparent);}
+.rb-gold{background:linear-gradient(90deg,var(--apex-gold),transparent);}
+
+/* EVO */
+.evo-panel{padding:10px 14px;}
+.evo-title{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(184,196,208,0.4);letter-spacing:2px;margin-bottom:8px;}
+.evo-bar-track{
+  height:8px;position:relative;background:rgba(255,255,255,0.05);
+  clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+}
+.evo-fill{
+  height:100%;background:linear-gradient(90deg,#60ff40,#a0ff60);
+  box-shadow:0 0 12px rgba(96,255,64,0.6);width:72%;
+  clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:width 1s ease;
+}
+.evo-labels{display:flex;justify-content:space-between;margin-top:5px;}
+.evo-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(184,196,208,0.35);letter-spacing:1px;}
+.evo-stage{color:#80ff60;}
+
+/* BOTTOM HUD */
+.bottom-hud{
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  padding:0 24px;
+  background:linear-gradient(0deg,rgba(5,8,12,0.97) 0%,rgba(7,10,16,0.75) 100%);
+  border-top:1px solid rgba(200,148,60,0.2);
+  box-shadow:0 -4px 40px rgba(0,0,0,0.6);
+  backdrop-filter:blur(20px);position:relative;overflow:hidden;
+}
+.bottom-hud::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(200,148,60,0.4) 20%,rgba(232,80,10,0.7) 50%,rgba(200,148,60,0.4) 80%,transparent 100%);
+}
+/* metal panel texture on bottom hud */
+.bottom-hud::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(90deg,transparent 0px,transparent 79px,rgba(255,255,255,0.005) 79px,rgba(255,255,255,0.005) 80px);
+}
+
+/* SQUAD */
+.squad-section{display:flex;gap:14px;padding:6px 0;}
+.squad-member{
+  display:flex;align-items:center;gap:9px;padding:6px 10px;
+  border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.02);
+  position:relative;overflow:hidden;transition:border-color 0.2s;
+}
+.squad-member::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='4' height='4' fill='rgba(255,255,255,0.01)'/%3E%3Crect x='4' y='4' width='4' height='4' fill='rgba(255,255,255,0.01)'/%3E%3C/svg%3E") repeat;
+}
+.squad-member:hover{border-color:rgba(0,229,200,0.25);}
+.sq-icon{font-size:18px;}
+.sq-info{display:flex;flex-direction:column;gap:3px;}
+.sq-name{font-size:12px;font-weight:700;color:var(--apex-bright);letter-spacing:1px;}
+.sq-bars{display:flex;flex-direction:column;gap:3px;}
+.sq-bar-row{display:flex;align-items:center;gap:5px;}
+.sq-bar-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(184,196,208,0.35);width:12px;letter-spacing:1px;}
+.sq-mini-bar{width:64px;height:4px;background:rgba(255,255,255,0.07);position:relative;overflow:hidden;}
+.sq-mini-fill{height:100%;transition:width 1s;}
+.sq-hp{background:linear-gradient(90deg,#d93025,#ff5544);}
+.sq-sh{background:linear-gradient(90deg,#2255dd,#5588ff);}
+.sq-bar-val{font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(184,196,208,0.4);width:22px;text-align:right;}
+
+/* CENTER HUD */
+.center-hud{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 20px;}
+.ring-warning{display:flex;align-items:center;gap:8px;}
+.ring-icon{font-size:14px;animation:warnPulse 1.5s ease-in-out infinite;}
+@keyframes warnPulse{50%{opacity:0.4;}}
+.ring-countdown{
+  font-family:'Orbitron',monospace;font-size:16px;font-weight:700;
+  color:#c060e0;letter-spacing:3px;
+  text-shadow:0 0 20px rgba(192,96,224,0.7);animation:countGlow 1s ease-in-out infinite;
+}
+@keyframes countGlow{
+  0%,100%{text-shadow:0 0 15px rgba(192,96,224,0.6);}
+  50%{text-shadow:0 0 30px rgba(192,96,224,1),0 0 60px rgba(192,96,224,0.3);}
+}
+.ring-phase{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(192,96,224,0.55);letter-spacing:2px;}
+.kills-row{display:flex;align-items:center;gap:12px;}
+.kills-num{
+  font-family:'Orbitron',monospace;font-size:30px;font-weight:900;
+  color:var(--apex-red);text-shadow:0 0 25px rgba(217,48,37,0.7);line-height:1;
+  animation:killsGlow 3s ease-in-out infinite;
+}
+@keyframes killsGlow{
+  0%,100%{text-shadow:0 0 20px rgba(217,48,37,0.5);}
+  50%{text-shadow:0 0 40px rgba(217,48,37,0.9),0 0 80px rgba(217,48,37,0.2);}
+}
+.kills-side{display:flex;flex-direction:column;gap:1px;}
+.kills-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(184,196,208,0.4);letter-spacing:2px;}
+.dmg-num{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--apex-amber);}
+
+/* SELF HUD */
+.self-hud{display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding:8px 0;}
+.self-hp-row{display:flex;align-items:baseline;gap:6px;}
+.self-hp-val{
+  font-family:'Orbitron',monospace;font-size:36px;font-weight:900;
+  color:#e84040;line-height:1;
+  text-shadow:0 0 30px rgba(232,64,64,0.5);animation:hpGlow 4s ease-in-out infinite;
+}
+@keyframes hpGlow{
+  0%,100%{text-shadow:0 0 20px rgba(232,64,64,0.4);}
+  50%{text-shadow:0 0 40px rgba(232,64,64,0.7);}
+}
+.self-hp-max{font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(184,196,208,0.3);}
+.self-bars{display:flex;flex-direction:column;gap:4px;align-items:flex-end;}
+.self-bar-row{display:flex;align-items:center;gap:7px;}
+.self-bar-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(184,196,208,0.4);}
+.self-bar-track{width:180px;height:5px;background:rgba(255,255,255,0.06);position:relative;overflow:hidden;}
+.self-hp-fill{height:100%;background:linear-gradient(90deg,#e84040,#ff6060);box-shadow:0 0 10px rgba(232,64,64,0.5);width:72%;transition:width 1s;}
+.self-sh-fill{height:100%;background:linear-gradient(90deg,#3366ff,#66aaff);box-shadow:0 0 10px rgba(51,102,255,0.5);width:100%;transition:width 1s;}
+.self-bar-val{font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(184,196,208,0.5);width:26px;text-align:right;}
+.ability-strip{display:flex;gap:5px;align-items:center;}
+.ability-slot{
+  width:40px;height:40px;
+  border:1px solid rgba(255,255,255,0.12);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1px;cursor:pointer;position:relative;overflow:hidden;transition:all 0.2s;
+  background:rgba(0,0,0,0.3);
+}
+.ability-slot::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(-45deg,transparent,transparent 3px,rgba(255,255,255,0.008) 3px,rgba(255,255,255,0.008) 4px);
+  pointer-events:none;
+}
+.ability-slot:hover{border-color:rgba(0,229,200,0.4);background:rgba(0,229,200,0.07);}
+.ability-slot.ready{border-color:var(--apex-teal);box-shadow:0 0 12px rgba(0,229,200,0.35),inset 0 0 8px rgba(0,229,200,0.05);}
+.ability-slot.cooling{border-color:rgba(255,255,255,0.05);opacity:0.55;}
+.a-icon{font-size:16px;position:relative;z-index:1;}
+.a-key{font-family:'Share Tech Mono',monospace;font-size:7px;color:rgba(184,196,208,0.35);letter-spacing:1px;position:relative;z-index:1;}
+.cooldown-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(0,229,200,0.2);transition:height 0.5s;}
+.ability-divider{font-family:'Share Tech Mono',monospace;font-size:18px;color:rgba(184,196,208,0.15);line-height:1;}
+
+/* KILL FEED */
+.kill-feed{position:fixed;top:78px;right:16px;display:flex;flex-direction:column;gap:4px;z-index:200;width:280px;}
+.kf-item{
+  display:flex;align-items:center;gap:6px;padding:5px 10px;
+  background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);
+  border-left:2px solid var(--apex-red);
+  font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:0.5px;color:var(--apex-text);
+  animation:kfIn 0.3s ease-out,kfOut 0.5s ease-in 5s forwards;
+}
+.kf-item.headshot{border-left-color:var(--apex-gold);}
+.kf-item.knocked{border-left-color:var(--apex-blue);}
+.kf-attacker{color:var(--apex-teal);}.kf-weapon{color:var(--apex-amber);}.kf-victim{color:#ff6060;}.kf-icon{font-size:10px;}
+@keyframes kfIn{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:translateX(0);}}
+@keyframes kfOut{to{opacity:0;transform:translateX(16px);}}
+
+/* AMMO HUD */
+.ammo-hud{
+  position:fixed;bottom:100px;right:30px;
+  font-family:'Orbitron',monospace;
+  display:flex;flex-direction:column;align-items:flex-end;gap:2px;z-index:150;
+}
+.ammo-current{font-size:52px;font-weight:900;color:var(--apex-bright);line-height:1;text-shadow:0 2px 20px rgba(0,0,0,0.8);}
+.ammo-reserve{font-size:22px;color:rgba(184,196,208,0.45);}
+.ammo-type{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--apex-amber);letter-spacing:3px;}
+
+/* CROSSHAIR */
+.ping-hud{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:50;opacity:0.4;}
+.crosshair{position:relative;width:30px;height:30px;}
+.ch-h{position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,0.7);margin-top:-0.5px;}
+.ch-v{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.7);margin-left:-0.5px;}
+.ch-gap{position:absolute;inset:8px;background:var(--apex-dark);}
+
+/* QUEUE OVERLAY */
+.queue-overlay{
+  position:fixed;inset:0;z-index:300;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.87);backdrop-filter:blur(4px);transition:opacity 0.5s;
+}
+.queue-box{
+  display:flex;flex-direction:column;align-items:center;gap:20px;
+  padding:48px 64px;
+  border:1px solid rgba(232,80,10,0.3);background:rgba(7,10,16,0.96);
+  position:relative;overflow:hidden;
+}
+/* diagonal stripe texture on queue box */
+.queue-box::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    repeating-linear-gradient(-45deg,transparent 0px,transparent 18px,rgba(232,80,10,0.025) 18px,rgba(232,80,10,0.025) 19px),
+    linear-gradient(135deg,rgba(232,80,10,0.06) 0%,transparent 60%);
+}
+.queue-box::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--apex-orange),transparent);
+}
+.queue-title{
+  font-family:'Bebas Neue','Rajdhani',sans-serif;font-size:60px;color:var(--apex-bright);
+  letter-spacing:8px;line-height:1;
+  text-shadow:0 0 60px rgba(232,80,10,0.4);position:relative;z-index:1;
+}
+.queue-title em{color:var(--apex-orange);font-style:normal;}
+.queue-sub{
+  font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(184,196,208,0.45);
+  letter-spacing:4px;text-transform:uppercase;position:relative;z-index:1;
+}
+.play-btn{
+  padding:16px 64px;
+  font-family:'Orbitron',monospace;font-size:16px;font-weight:900;letter-spacing:4px;
+  text-transform:uppercase;cursor:pointer;
+  background:linear-gradient(135deg,var(--apex-orange),var(--apex-red));
+  color:#fff;border:none;
+  clip-path:polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%);
+  box-shadow:0 0 40px rgba(232,80,10,0.5),0 4px 20px rgba(0,0,0,0.4);
+  position:relative;z-index:1;transition:all 0.2s;
+  animation:btnPulse 3s ease-in-out infinite;
+}
+.play-btn:hover{transform:scale(1.04);box-shadow:0 0 60px rgba(232,80,10,0.7),0 4px 30px rgba(0,0,0,0.5);}
+@keyframes btnPulse{
+  0%,100%{box-shadow:0 0 30px rgba(232,80,10,0.4),0 4px 20px rgba(0,0,0,0.4);}
+  50%{box-shadow:0 0 60px rgba(232,80,10,0.7),0 4px 30px rgba(0,0,0,0.5);}
+}
+.queue-info{
+  display:flex;gap:24px;font-family:'Share Tech Mono',monospace;
+  font-size:10px;color:rgba(184,196,208,0.4);letter-spacing:1px;position:relative;z-index:1;
+}
+.qi-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.qi-val{font-size:14px;color:var(--apex-teal);}
+.scroll-cue{
+  font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(184,196,208,0.3);
+  letter-spacing:2px;position:relative;z-index:1;animation:scrollCue 2s ease-in-out infinite;
+}
+@keyframes scrollCue{50%{opacity:0.1;}}
+
+/* FADE IN */
+.fade-in{animation:fadeIn 0.4s ease-out both;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.left-panel>*:nth-child(1){animation-delay:0.05s;}
+.left-panel>*:nth-child(2){animation-delay:0.10s;}
+.left-panel>*:nth-child(3){animation-delay:0.15s;}
+.center-col>*:nth-child(1){animation-delay:0.08s;}
+.center-col>*:nth-child(2){animation-delay:0.14s;}
+.center-col>*:nth-child(3){animation-delay:0.20s;}
+.center-col>*:nth-child(4){animation-delay:0.26s;}
+.right-panel>*:nth-child(1){animation-delay:0.10s;}
+.right-panel>*:nth-child(2){animation-delay:0.16s;}
+.right-panel>*:nth-child(3){animation-delay:0.22s;}
+</style>
+</head>
+<body>
+
+<div class="scene-bg"></div>
+<div class="hex-grid"></div>
+<div class="dot-matrix"></div>
+
+<!-- KILL FEED -->
+<div class="kill-feed" id="killFeed">
+  <div class="kf-item headshot">
+    <span class="kf-icon">💀</span>
+    <span class="kf-attacker">ShadowWolf</span>
+    <span style="color:rgba(184,196,208,0.4)"> HS </span>
+    <span class="kf-weapon">Kraber</span>
+    <span style="color:rgba(184,196,208,0.4)"> ▶ </span>
+    <span class="kf-victim">NightHawk</span>
+  </div>
+  <div class="kf-item">
+    <span class="kf-icon">💥</span>
+    <span class="kf-attacker">ProdigyX</span>
+    <span style="color:rgba(184,196,208,0.4)"> ▶ </span>
+    <span class="kf-weapon">R-301</span>
+    <span style="color:rgba(184,196,208,0.4)"> ▶ </span>
+    <span class="kf-victim">Phantom9</span>
+  </div>
+  <div class="kf-item knocked">
+    <span class="kf-icon">⬇️</span>
+    <span class="kf-attacker">IronFist</span>
+    <span style="color:rgba(184,196,208,0.4)"> KNCK </span>
+    <span class="kf-victim">DarkBlade</span>
+  </div>
+</div>
+
+<!-- AMMO HUD -->
+<div class="ammo-hud">
+  <div class="ammo-current" id="ammoCurrent">18</div>
+  <div class="ammo-reserve">/ <span id="ammoReserve">180</span></div>
+  <div class="ammo-type">ENERGY</div>
+</div>
+
+<!-- CROSSHAIR -->
+<div class="ping-hud">
+  <div class="crosshair">
+    <div class="ch-h"></div><div class="ch-v"></div><div class="ch-gap"></div>
+  </div>
+</div>
+
+<div class="game-wrapper">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="logo-area">
+      <div class="logo-icon">⬡</div>
+      <div class="logo-text"><em>APEX</em> LEGENDS</div>
+      <div class="logo-season">SEASON 23</div>
+    </div>
+    <nav class="topbar-center">
+      <div class="nav-tab active">LOBBY</div>
+      <div class="nav-tab">LEGENDS</div>
+      <div class="nav-tab">ARMORY</div>
+      <div class="nav-tab">RANKED</div>
+      <div class="nav-tab">STORE</div>
+    </nav>
+    <div class="topbar-right">
+      <div class="rp-display">
+        <div style="font-size:14px">💎</div>
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <div class="rp-val">8,240</div>
+          <div class="rp-label">APEX COINS</div>
+        </div>
+      </div>
+      <div class="player-profile">
+        <div class="avatar-frame">
+          <div class="avatar-inner">🦊</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div class="profile-name">SHADOWWOLF</div>
+          <div class="profile-rank">⭐ DIAMOND IV · LVL 482</div>
+        </div>
+        <div class="online-dot"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- LEFT -->
+    <aside class="left-panel">
+      <div class="panel legend-active-card fade-in">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div class="selected-legend-name" id="selName">WRAITH</div>
+            <div class="selected-legend-class" id="selClass">SKIRMISHER CLASS</div>
+          </div>
+          <div class="selected-legend-icon" id="selIcon">👤</div>
+        </div>
+        <div class="legend-stat-row">
+          <div class="lstat"><div class="lstat-val">3.8</div><div class="lstat-key">K/D RATIO</div></div>
+          <div class="lstat"><div class="lstat-val">1,240</div><div class="lstat-key">AVG DMG</div></div>
+          <div class="lstat"><div class="lstat-val">67%</div><div class="lstat-key">WIN RATE</div></div>
+        </div>
+      </div>
+
+      <div class="panel fade-in">
+        <div class="panel-header">
+          <div class="panel-title"><div class="panel-title-bar"></div>SELECT LEGEND</div>
+          <div class="panel-badge">8 OWNED</div>
+        </div>
+        <div class="legend-roster">
+          <div class="legend-card active" onclick="selectLegend(this,'WRAITH','👤','SKIRMISHER')">
+            <div class="lc-icon">👤</div><div class="lc-name">WRAITH</div>
+            <div class="lc-type type-O">Skirmisher</div><div class="lc-badge badge-O">OFFENSIVE</div>
+          </div>
+          <div class="legend-card" onclick="selectLegend(this,'BLOODHOUND','🐺','RECON')">
+            <div class="lc-icon">🐺</div><div class="lc-name">BLOODHOUND</div>
+            <div class="lc-type type-R">Recon</div><div class="lc-badge badge-R">RECON</div>
+          </div>
+          <div class="legend-card" onclick="selectLegend(this,'LIFELINE','💊','SUPPORT')">
+            <div class="lc-icon">💊</div><div class="lc-name">LIFELINE</div>
+            <div class="lc-type type-S">Support</div><div class="lc-badge badge-S">SUPPORT</div>
+          </div>
+          <div class="legend-card" onclick="selectLegend(this,'GIBRALTAR','🛡️','DEFENSIVE')">
+            <div class="lc-icon">🛡️</div><div class="lc-name">GIBRALTAR</div>
+            <div class="lc-type type-D">Defensive</div><div class="lc-badge badge-D">DEFENSIVE</div>
+          </div>
+          <div class="legend-card" onclick="selectLegend(this,'PATHFINDER','🤖','SKIRMISHER')">
+            <div class="lc-icon">🤖</div><div class="lc-name">PATHFINDER</div>
+            <div class="lc-type type-O">Skirmisher</div><div class="lc-badge badge-O">OFFENSIVE</div>
+          </div>
+          <div class="legend-card" onclick="selectLegend(this,'CAUSTIC','☠️','DEFENSIVE')">
+            <div class="lc-icon">☠️</div><div class="lc-name">CAUSTIC</div>
+            <div class="lc-type type-D">Defensive</div><div class="lc-badge badge-D">DEFENSIVE</div>
+          </div>
+          <div class="legend-card" onclick="selectLegend(this,'OCTANE','⚡','SKIRMISHER')">
+            <div class="lc-icon">⚡</div><div class="lc-name">OCTANE</div>
+            <div class="lc-type type-O">Skirmisher</div><div class="lc-badge badge-O">OFFENSIVE</div>
+          </div>
+          <div class="legend-card" onclick="selectLegend(this,'BANGALORE','💣','OFFENSIVE')">
+            <div class="lc-icon">💣</div><div class="lc-name">BANGALORE</div>
+            <div class="lc-type type-O">Offensive</div><div class="lc-badge badge-O">OFFENSIVE</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER -->
+    <section class="center-col">
+      <div class="mode-row fade-in">
+        <div class="mode-btn active">BATTLE ROYALE</div>
+        <div class="mode-btn">RANKED LEAGUE</div>
+        <div class="mode-btn">MIXTAPE</div>
+        <div class="mode-btn">ARENAS</div>
+      </div>
+
+      <!-- MAP with full SVG terrain -->
+      <div class="panel map-panel fade-in">
+        <svg class="map-svg-bg" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="mgBase" cx="40%" cy="65%" r="65%">
+              <stop offset="0%" stop-color="#1c0a06"/><stop offset="100%" stop-color="#040608"/>
+            </radialGradient>
+            <filter id="glow4"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="blur3"><feGaussianBlur stdDeviation="3"/></filter>
+            <pattern id="lavaFlow" x="0" y="0" width="80" height="40" patternUnits="userSpaceOnUse">
+              <path d="M0 20 Q20 5 40 20 Q60 35 80 20" stroke="rgba(220,60,10,0.12)" stroke-width="2" fill="none"/>
+            </pattern>
+            <pattern id="iceShards" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="40" y2="40" stroke="rgba(100,190,255,0.07)" stroke-width="0.8"/>
+              <line x1="40" y1="0" x2="0" y2="40" stroke="rgba(100,190,255,0.07)" stroke-width="0.8"/>
+              <line x1="20" y1="0" x2="20" y2="40" stroke="rgba(100,190,255,0.04)" stroke-width="0.5"/>
+            </pattern>
+            <pattern id="hatchPat" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="10" x2="10" y2="0" stroke="rgba(100,140,180,0.07)" stroke-width="0.8"/>
+            </pattern>
+            <radialGradient id="mapVig" cx="50%" cy="50%" r="70%">
+              <stop offset="55%" stop-color="transparent"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.55)"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Base -->
+          <rect width="800" height="450" fill="url(#mgBase)"/>
+          <rect width="800" height="450" fill="url(#hatchPat)"/>
+
+          <!-- ICE ZONE top-left -->
+          <ellipse cx="135" cy="85" rx="115" ry="62" fill="rgba(30,70,140,0.22)"/>
+          <ellipse cx="135" cy="85" rx="115" ry="62" fill="url(#iceShards)"/>
+          <ellipse cx="135" cy="85" rx="70" ry="38" fill="rgba(40,100,180,0.14)"/>
+          <ellipse cx="135" cy="88" rx="40" ry="22" fill="rgba(60,140,220,0.1)" filter="url(#blur3)"/>
+
+          <!-- LAVA ZONE bottom center -->
+          <ellipse cx="400" cy="390" rx="185" ry="75" fill="rgba(150,35,8,0.28)"/>
+          <ellipse cx="400" cy="390" rx="185" ry="75" fill="url(#lavaFlow)"/>
+          <ellipse cx="400" cy="398" rx="115" ry="42" fill="rgba(210,55,10,0.2)"/>
+          <ellipse cx="400" cy="400" rx="70" ry="25" fill="rgba(255,80,10,0.14)" filter="url(#blur3)">
+            <animate attributeName="rx" values="70;82;70" dur="2.8s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.14;0.22;0.14" dur="2.8s" repeatCount="indefinite"/>
+          </ellipse>
+          <!-- lava cracks -->
+          <path d="M320 420 Q360 400 400 420 Q440 440 480 415" stroke="rgba(255,100,20,0.25)" stroke-width="2" fill="none"/>
+          <path d="M350 440 Q390 415 430 438" stroke="rgba(255,80,10,0.2)" stroke-width="1.5" fill="none"/>
+
+          <!-- Terrain highlands -->
+          <path d="M0 175 Q80 148 165 162 Q245 176 325 158 Q405 140 485 152 Q565 164 645 146 Q725 128 800 140 L800 0 L0 0 Z" fill="rgba(10,18,28,0.72)"/>
+          <path d="M0 325 Q105 302 205 318 Q308 334 385 312 Q462 290 542 308 Q622 326 705 304 Q755 292 800 298 L800 450 L0 450 Z" fill="rgba(6,12,20,0.82)"/>
+
+          <!-- ROADS -->
+          <path d="M45 228 Q200 202 355 218 Q510 234 658 212 Q732 200 800 207" stroke="rgba(80,120,165,0.14)" stroke-width="9" fill="none"/>
+          <path d="M205 45 Q215 152 222 228 Q229 304 236 382 Q240 418 244 450" stroke="rgba(80,120,165,0.11)" stroke-width="7" fill="none"/>
+          <path d="M582 0 Q572 102 562 182 Q552 262 546 352 Q543 402 540 450" stroke="rgba(80,120,165,0.11)" stroke-width="7" fill="none"/>
+          <!-- side road -->
+          <path d="M0 265 Q100 248 220 255 Q300 260 380 250" stroke="rgba(80,120,165,0.08)" stroke-width="5" fill="none"/>
+
+          <!-- FRAGMENT EAST - main city -->
+          <rect x="328" y="177" width="84" height="62" rx="2" fill="rgba(24,38,55,0.65)" stroke="rgba(80,130,175,0.22)" stroke-width="0.7"/>
+          <rect x="336" y="185" width="19" height="15" fill="rgba(34,54,78,0.85)" rx="1"/>
+          <rect x="359" y="185" width="19" height="15" fill="rgba(34,54,78,0.85)" rx="1"/>
+          <rect x="382" y="185" width="19" height="15" fill="rgba(34,54,78,0.85)" rx="1"/>
+          <rect x="336" y="205" width="19" height="15" fill="rgba(34,54,78,0.85)" rx="1"/>
+          <rect x="359" y="205" width="19" height="15" fill="rgba(34,54,78,0.85)" rx="1"/>
+          <rect x="382" y="205" width="19" height="15" fill="rgba(34,54,78,0.85)" rx="1"/>
+          <rect x="336" y="224" width="65" height="8" fill="rgba(28,44,64,0.7)" rx="1"/>
+          <!-- Fragment glow -->
+          <rect x="328" y="177" width="84" height="62" rx="2" fill="rgba(200,140,60,0.03)" filter="url(#glow4)"/>
+
+          <!-- TRAIN YARD -->
+          <rect x="96" y="188" width="94" height="48" rx="2" fill="rgba(20,32,48,0.65)" stroke="rgba(80,130,175,0.18)" stroke-width="0.7"/>
+          <rect x="104" y="196" width="74" height="9" fill="rgba(30,46,68,0.9)" rx="1"/>
+          <rect x="104" y="210" width="74" height="9" fill="rgba(30,46,68,0.9)" rx="1"/>
+          <rect x="104" y="224" width="74" height="9" fill="rgba(30,46,68,0.9)" rx="1"/>
+          <!-- train tracks -->
+          <line x1="80" y1="200" x2="200" y2="200" stroke="rgba(100,140,180,0.15)" stroke-width="1"/>
+          <line x1="80" y1="213" x2="200" y2="213" stroke="rgba(100,140,180,0.15)" stroke-width="1"/>
+          <line x1="80" y1="226" x2="200" y2="226" stroke="rgba(100,140,180,0.15)" stroke-width="1"/>
+
+          <!-- EPICENTER - circular structure -->
+          <circle cx="582" cy="208" r="34" fill="rgba(22,36,54,0.65)" stroke="rgba(80,130,175,0.22)" stroke-width="0.7"/>
+          <circle cx="582" cy="208" r="22" fill="rgba(32,50,72,0.55)"/>
+          <circle cx="582" cy="208" r="12" fill="rgba(44,68,95,0.65)"/>
+          <circle cx="582" cy="208" r="4" fill="rgba(60,90,125,0.8)"/>
+          <!-- spokes -->
+          <line x1="582" y1="176" x2="582" y2="186" stroke="rgba(100,140,180,0.18)" stroke-width="1.2"/>
+          <line x1="582" y1="230" x2="582" y2="240" stroke="rgba(100,140,180,0.18)" stroke-width="1.2"/>
+          <line x1="550" y1="208" x2="560" y2="208" stroke="rgba(100,140,180,0.18)" stroke-width="1.2"/>
+          <line x1="604" y1="208" x2="614" y2="208" stroke="rgba(100,140,180,0.18)" stroke-width="1.2"/>
+
+          <!-- COUNTDOWN -->
+          <rect x="478" y="287" width="74" height="53" rx="2" fill="rgba(22,36,52,0.62)" stroke="rgba(80,130,175,0.16)" stroke-width="0.7"/>
+          <rect x="484" y="293" width="30" height="22" fill="rgba(32,50,72,0.8)" rx="1"/>
+          <rect x="518" y="293" width="28" height="22" fill="rgba(32,50,72,0.8)" rx="1"/>
+          <rect x="484" y="320" width="62" height="14" fill="rgba(28,44,64,0.7)" rx="1"/>
+
+          <!-- THE TREE -->
+          <circle cx="202" cy="298" r="29" fill="rgba(15,45,22,0.5)" stroke="rgba(30,110,50,0.22)" stroke-width="0.7"/>
+          <circle cx="202" cy="298" r="18" fill="rgba(22,65,32,0.45)"/>
+          <path d="M194 298 L198 273 L202 264 L206 273 L210 298 Z" fill="rgba(35,90,45,0.45)"/>
+          <circle cx="202" cy="270" r="8" fill="rgba(25,75,38,0.55)" filter="url(#blur3)"/>
+
+          <!-- grid overlay -->
+          <line x1="200" y1="0" x2="200" y2="450" stroke="rgba(80,130,180,0.055)" stroke-width="0.5"/>
+          <line x1="400" y1="0" x2="400" y2="450" stroke="rgba(80,130,180,0.055)" stroke-width="0.5"/>
+          <line x1="600" y1="0" x2="600" y2="450" stroke="rgba(80,130,180,0.055)" stroke-width="0.5"/>
+          <line x1="0" y1="150" x2="800" y2="150" stroke="rgba(80,130,180,0.055)" stroke-width="0.5"/>
+          <line x1="0" y1="300" x2="800" y2="300" stroke="rgba(80,130,180,0.055)" stroke-width="0.5"/>
+
+          <!-- vignette -->
+          <rect width="800" height="450" fill="url(#mapVig)"/>
+        </svg>
+
+        <div class="map-overlay">
+          <div class="ring ring-outer" style="left:42%;top:52%;width:56%;height:82%;"></div>
+          <div class="ring ring-inner" style="left:48%;top:54%;width:28%;height:41%;"></div>
+
+          <div class="poi-dot" style="left:47.5%;top:48%"></div>
+          <div class="poi-label" style="left:47.5%;top:43%">FRAGMENT EAST</div>
+          <div class="poi-dot" style="left:17%;top:48%"></div>
+          <div class="poi-label" style="left:17%;top:43%">TRAIN YARD</div>
+          <div class="poi-dot" style="left:72.8%;top:50%"></div>
+          <div class="poi-label" style="left:72.8%;top:45%">EPICENTER</div>
+          <div class="poi-dot" style="left:25.3%;top:70%"></div>
+          <div class="poi-label" style="left:25.3%;top:65%">THE TREE</div>
+          <div class="poi-dot" style="left:61%;top:68%"></div>
+          <div class="poi-label" style="left:61%;top:64%">COUNTDOWN</div>
+
+          <div class="map-marker marker-enemy" style="left:55%;top:38%"><div class="marker-body"></div></div>
+          <div class="map-marker marker-enemy" style="left:62%;top:52%"><div class="marker-body"></div></div>
+          <div class="map-marker marker-enemy" style="left:38%;top:60%"><div class="marker-body"></div></div>
+          <div class="map-marker marker-team" style="left:44%;top:51%"><div class="marker-body"></div></div>
+          <div class="map-marker marker-team" style="left:43%;top:55%"><div class="marker-body"></div></div>
+          <div class="map-marker marker-me" style="left:46%;top:53%"><div class="marker-body"></div></div>
+          <div class="map-marker marker-ping" style="left:58%;top:44%">
+            <div class="marker-body"></div>
+            <div class="ping-ripple"></div>
+          </div>
+
+          <div class="map-info-bar">
+            <div class="map-badge-grp">
+              <div class="map-badge map-badge-r">⬡ SQUADS REMAINING: 12</div>
+              <div class="map-badge map-badge-p">◎ RING CLOSES: 2:34</div>
+              <div class="map-badge map-badge-g">★ CARE PKG INCOMING</div>
+            </div>
+            <div class="map-badge-grp" style="align-items:flex-end">
+              <div class="map-badge map-badge-t">📍 WORLD'S EDGE</div>
+              <div class="map-badge map-badge-t">🔢 MATCH #47</div>
+            </div>
+          </div>
+
+          <div class="compass">
+            <div class="compass-n">N</div>
+            <div class="compass-needle"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAT CARDS -->
+      <div class="stat-row fade-in">
+        <div class="stat-card">
+          <div class="sc-val">3<span class="sc-unit">kills</span></div>
+          <div class="sc-key">MATCH KILLS</div>
+          <div class="sc-bar"><div class="sc-fill" style="width:60%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-val">2,180<span class="sc-unit" style="font-size:10px">dmg</span></div>
+          <div class="sc-key">DAMAGE DEALT</div>
+          <div class="sc-bar"><div class="sc-fill" style="width:73%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-val">#6<span class="sc-unit">pos</span></div>
+          <div class="sc-key">PLACEMENT</div>
+          <div class="sc-bar"><div class="sc-fill" style="width:85%"></div></div>
+        </div>
+      </div>
+
+      <!-- RANKED -->
+      <div class="panel fade-in">
+        <div class="panel-header">
+          <div class="panel-title"><div class="panel-title-bar"></div>RANKED PROGRESS</div>
+          <div class="panel-badge">THIS SPLIT</div>
+        </div>
+        <div class="rank-panel">
+          <div class="rank-row">
+            <div>
+              <div class="rank-tier">DIAMOND</div>
+              <div class="rank-div">DIVISION IV</div>
+            </div>
+            <div>
+              <div class="rank-rp">8,240 RP</div>
+              <div class="rank-next">→ MASTER: +1,760</div>
+            </div>
+          </div>
+          <div class="rank-progress-track"><div class="rank-progress-fill"></div></div>
+          <div class="rank-pips">
+            <div class="rank-pip filled"></div><div class="rank-pip filled"></div>
+            <div class="rank-pip filled"></div><div class="rank-pip partial"></div>
+            <div class="rank-pip"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT -->
+    <aside class="right-panel">
+      <div class="panel fade-in">
+        <div class="panel-header">
+          <div class="panel-title"><div class="panel-title-bar"></div>LOADOUT</div>
+          <div class="panel-badge">SLOT 2/2</div>
+        </div>
+        <div class="loadout-section">
+          <div class="weapon-slot equipped">
+            <div class="ws-top">
+              <div class="ws-emoji">🔫</div>
+              <div class="ws-info">
+                <div class="ws-name">R-301 CARBINE</div>
+                <div class="ws-type">LIGHT AMMO · FULL-AUTO</div>
+                <div class="ws-attachments">
+                  <div class="attach attach-blue">3× HCOG</div>
+                  <div class="attach attach-purple">EXT MAG LV3</div>
+                  <div class="attach attach-gold">TURBOCHARGER</div>
+                </div>
+              </div>
+              <div class="ws-ammo-group">
+                <div class="ws-ammo" id="ammoW1">18</div>
+                <div class="ws-ammo-max">/ 28</div>
+              </div>
+            </div>
+            <div class="ws-ammo-bar"><div class="ws-ammo-fill" style="width:64%" id="ammoBar1"></div></div>
+          </div>
+          <div class="weapon-slot">
+            <div class="ws-top">
+              <div class="ws-emoji">🎯</div>
+              <div class="ws-info">
+                <div class="ws-name">WINGMAN</div>
+                <div class="ws-type">HEAVY AMMO · SEMI-AUTO</div>
+                <div class="ws-attachments">
+                  <div class="attach attach-purple">2× BRUISER</div>
+                  <div class="attach attach-purple">SKULL PIER LV3</div>
+                  <div class="attach attach-blue">HAMMERPOINT</div>
+                </div>
+              </div>
+              <div class="ws-ammo-group">
+                <div class="ws-ammo">6</div>
+                <div class="ws-ammo-max">/ 6</div>
+              </div>
+            </div>
+            <div class="ws-ammo-bar"><div class="ws-ammo-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel fade-in">
+        <div class="panel-header">
+          <div class="panel-title"><div class="panel-title-bar"></div>INVENTORY</div>
+          <div class="panel-badge">10/12</div>
+        </div>
+        <div class="inv-grid">
+          <div class="inv-slot"><div class="inv-rarity-bar rb-purple"></div><div class="inv-icon">💊</div><div class="inv-count">×3</div></div>
+          <div class="inv-slot"><div class="inv-rarity-bar rb-blue"></div><div class="inv-icon">🩹</div><div class="inv-count">×5</div></div>
+          <div class="inv-slot"><div class="inv-rarity-bar rb-blue"></div><div class="inv-icon">🔋</div><div class="inv-count">×4</div></div>
+          <div class="inv-slot"><div class="inv-rarity-bar rb-gold"></div><div class="inv-icon">⚡</div><div class="inv-count">×2</div></div>
+          <div class="inv-slot"><div class="inv-rarity-bar rb-purple"></div><div class="inv-icon">🛡️</div><div class="inv-count">×1</div></div>
+          <div class="inv-slot"><div class="inv-rarity-bar rb-blue"></div><div class="inv-icon">💣</div><div class="inv-count">×2</div></div>
+          <div class="inv-slot"><div class="inv-icon">🔵</div><div class="inv-count">180</div></div>
+          <div class="inv-slot"><div class="inv-icon">🟡</div><div class="inv-count">60</div></div>
+          <div class="inv-slot"><div class="inv-icon">🔴</div><div class="inv-count">40</div></div>
+          <div class="inv-slot"><div class="inv-rarity-bar rb-gold"></div><div class="inv-icon">🌀</div><div class="inv-count">×1</div></div>
+          <div class="inv-slot empty"><div class="inv-icon">—</div></div>
+          <div class="inv-slot empty"><div class="inv-icon">—</div></div>
+        </div>
+      </div>
+
+      <div class="panel fade-in">
+        <div class="panel-header">
+          <div class="panel-title"><div class="panel-title-bar"></div>EVO ARMOR</div>
+          <div class="panel-badge">STAGE 3 / 5</div>
+        </div>
+        <div class="evo-panel">
+          <div class="evo-title">EVOLUTION PROGRESS</div>
+          <div class="evo-bar-track"><div class="evo-fill"></div></div>
+          <div class="evo-labels">
+            <div class="evo-label">720 / 1000 DMG</div>
+            <div class="evo-label evo-stage">▶ PURPLE NEXT</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- BOTTOM HUD -->
+  <footer class="bottom-hud">
+    <div class="squad-section">
+      <div class="squad-member">
+        <div class="sq-icon">👤</div>
+        <div class="sq-info">
+          <div class="sq-name">SHADOWWOLF</div>
+          <div class="sq-bars">
+            <div class="sq-bar-row"><div class="sq-bar-lbl">HP</div><div class="sq-mini-bar"><div class="sq-mini-fill sq-hp" style="width:72%"></div></div><div class="sq-bar-val">72</div></div>
+            <div class="sq-bar-row"><div class="sq-bar-lbl">SH</div><div class="sq-mini-bar"><div class="sq-mini-fill sq-sh" style="width:100%"></div></div><div class="sq-bar-val">75</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="squad-member">
+        <div class="sq-icon">🐺</div>
+        <div class="sq-info">
+          <div class="sq-name">IRONCLAD</div>
+          <div class="sq-bars">
+            <div class="sq-bar-row"><div class="sq-bar-lbl">HP</div><div class="sq-mini-bar"><div class="sq-mini-fill sq-hp" style="width:55%"></div></div><div class="sq-bar-val">55</div></div>
+            <div class="sq-bar-row"><div class="sq-bar-lbl">SH</div><div class="sq-mini-bar"><div class="sq-mini-fill sq-sh" style="width:80%"></div></div><div class="sq-bar-val">60</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="squad-member">
+        <div class="sq-icon">💊</div>
+        <div class="sq-info">
+          <div class="sq-name">MEDIX</div>
+          <div class="sq-bars">
+            <div class="sq-bar-row"><div class="sq-bar-lbl">HP</div><div class="sq-mini-bar"><div class="sq-mini-fill sq-hp" style="width:88%"></div></div><div class="sq-bar-val">88</div></div>
+            <div class="sq-bar-row"><div class="sq-bar-lbl">SH</div><div class="sq-mini-bar"><div class="sq-mini-fill sq-sh" style="width:90%"></div></div><div class="sq-bar-val">68</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="center-hud">
+      <div class="ring-warning">
+        <span class="ring-icon">🌀</span>
+        <div class="ring-countdown" id="ringTimer">2:34</div>
+        <span class="ring-icon">🌀</span>
+      </div>
+      <div class="ring-phase">RING PHASE 3 · CLOSING</div>
+      <div class="kills-row">
+        <div class="kills-side" style="text-align:right">
+          <div class="kills-lbl">KILLS</div>
+          <div class="dmg-num">3</div>
+        </div>
+        <div class="kills-num">2,180</div>
+        <div class="kills-side">
+          <div class="kills-lbl">DAMAGE</div>
+          <div class="kills-lbl" style="color:var(--apex-teal)">TOP 12</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="self-hud">
+      <div class="self-hp-row">
+        <div class="self-hp-val" id="hpVal">72</div>
+        <div class="self-hp-max">/ 100 HP</div>
+      </div>
+      <div class="self-bars">
+        <div class="self-bar-row">
+          <div class="self-bar-lbl">HP</div>
+          <div class="self-bar-track"><div class="self-hp-fill" id="hpBar" style="width:72%"></div></div>
+          <div class="self-bar-val">72</div>
+        </div>
+        <div class="self-bar-row">
+          <div class="self-bar-lbl">SH</div>
+          <div class="self-bar-track"><div class="self-sh-fill" style="width:100%"></div></div>
+          <div class="self-bar-val">75</div>
+        </div>
+      </div>
+      <div class="ability-strip">
+        <div class="ability-slot ready"><div class="a-icon">👁️</div><div class="a-key">PASSIVE</div></div>
+        <div class="ability-divider">|</div>
+        <div class="ability-slot ready"><div class="a-icon">🌀</div><div class="a-key">Q</div><div class="cooldown-bar" style="height:0%"></div></div>
+        <div class="ability-slot cooling"><div class="a-icon">🔮</div><div class="a-key">Z · 45s</div><div class="cooldown-bar" style="height:55%"></div></div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- QUEUE OVERLAY -->
+<div class="queue-overlay" id="queueOverlay">
+  <div class="queue-box">
+    <div class="queue-title">APEX <em>LEGENDS</em></div>
+    <div class="queue-sub">SEASON 23 · CODA · WORLD'S EDGE</div>
+    <button class="play-btn" onclick="startGame()">▶ PLAY NOW</button>
+    <div class="queue-info">
+      <div class="qi-item"><div class="qi-val">3/3</div><div>SQUAD</div></div>
+      <div class="qi-item"><div class="qi-val">BR RANKED</div><div>MODE</div></div>
+      <div class="qi-item"><div class="qi-val" id="queueTime">00:12</div><div>QUEUE</div></div>
+    </div>
+    <div class="scroll-cue">▼ CLICK TO DISMISS</div>
+  </div>
+</div>
+
+<script>
+function selectLegend(el,name,icon,cls){
+  document.querySelectorAll('.legend-card').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('selName').textContent=name;
+  document.getElementById('selIcon').textContent=icon;
+  document.getElementById('selClass').textContent=cls+' CLASS';
+}
+function startGame(){
+  const o=document.getElementById('queueOverlay');
+  o.style.opacity='0';setTimeout(()=>o.style.display='none',600);
+  startTimers();
+}
+document.getElementById('queueOverlay').addEventListener('click',function(e){if(e.target===this)startGame();});
+
+let qs=12;
+const qt=setInterval(()=>{
+  qs++;const m=String(Math.floor(qs/60)).padStart(2,'0');const s=String(qs%60).padStart(2,'0');
+  const el=document.getElementById('queueTime');if(el)el.textContent=m+':'+s;
+},1000);
+
+let ringSec=154;
+function startTimers(){
+  clearInterval(qt);
+  setInterval(()=>{
+    if(ringSec>0)ringSec--;
+    const m=Math.floor(ringSec/60);const s=String(ringSec%60).padStart(2,'0');
+    document.getElementById('ringTimer').textContent=m+':'+s;
+  },1000);
+  setInterval(()=>{
+    const c=parseInt(document.getElementById('hpVal').textContent);
+    const n=Math.max(10,Math.min(100,c+Math.floor(Math.random()*7)-2));
+    document.getElementById('hpVal').textContent=n;
+    document.getElementById('hpBar').style.width=n+'%';
+  },2800);
+  setInterval(()=>{
+    const c=parseInt(document.getElementById('ammoCurrent').textContent);
+    if(c>0){
+      const n=Math.max(0,c-Math.floor(Math.random()*3));
+      document.getElementById('ammoCurrent').textContent=n;
+      if(n===0){
+        const r=parseInt(document.getElementById('ammoReserve').textContent);
+        if(r>=28){document.getElementById('ammoCurrent').textContent=28;document.getElementById('ammoReserve').textContent=r-28;}
+      }
+    }
+  },900);
+  const kills=[
+    {type:'',a:'IRONCLAD',w:'Flatline',v:'SteelPhantom'},
+    {type:'headshot',a:'MEDIX',w:'Kraber',v:'NightRunner'},
+    {type:'knocked',a:'ShadowWolf',w:'',v:'BloodRacer'},
+    {type:'',a:'CrimsonX',w:'Mastiff',v:'IRONCLAD'},
+    {type:'headshot',a:'ProWolfX',w:'Longbow',v:'SkyBane'},
+    {type:'',a:'VoidByte',w:'Peacekeeper',v:'RedFox22'},
+  ];
+  let ki=0;
+  setInterval(()=>{
+    const kf=document.getElementById('killFeed');
+    const k=kills[ki%kills.length];ki++;
+    const d=document.createElement('div');d.className='kf-item '+k.type;
+    if(k.type==='knocked'){
+      d.innerHTML=`<span class="kf-icon">⬇️</span><span class="kf-attacker">${k.a}</span><span style="color:rgba(184,196,208,0.4)"> KNCK </span><span class="kf-victim">${k.v}</span>`;
+    }else{
+      d.innerHTML=`<span class="kf-icon">${k.type==='headshot'?'💀':'💥'}</span><span class="kf-attacker">${k.a}</span><span style="color:rgba(184,196,208,0.4)"> ▶ </span><span class="kf-weapon">${k.w}</span><span style="color:rgba(184,196,208,0.4)"> ▶ </span><span class="kf-victim">${k.v}</span>`;
+    }
+    kf.insertBefore(d,kf.firstChild);
+    if(kf.children.length>5)kf.removeChild(kf.lastChild);
+    setTimeout(()=>d.remove(),5500);
+  },4500);
+}
+document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',function(){
+  document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');
+}));
+document.querySelectorAll('.mode-btn').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));this.classList.add('active');
+}));
+</script>
+</body>
+</html>
